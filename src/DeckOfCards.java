@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class DeckOfCards {
     public static void main(String[] args) {
-        //suits and ranks of the cards
+        //Define suits and ranks of the cards
         String[] suits = { "Clubs","Diamonds", "Hearts", "Spades"};
         String[] ranks = {"2", "3", "4", "5", "6", "7", "8",
                 "9", "10", "Jack", "Queen", "King", "Ace"};
@@ -22,22 +22,22 @@ public class DeckOfCards {
         shuffleDeck(deck);
 
         //Distribute 9 cards to 4 players
-        String[][] players = new String[4][9];
-        int cardIndex = 0;
+       PlayerQueue playerQueue = new PlayerQueue();
         for(int i=0; i<4; i++){
+            Player player = new Player("Player " + (i+1));
             for(int j=0; j<9; j++){
-                players[i][j] = deck[cardIndex++];
+                player.addCard(deck[i*9+j]);
             }
+            player.sortCards(ranks); //sort cards by rank
+            playerQueue.enqueue(player);
         }
-        // Print the cards received by each player
-        for (int i = 0; i < 4; i++) {
-            System.out.println("Player " + (i + 1) + "'s cards:");
-            for (int j = 0; j < 9; j++) {
-                System.out.println(players[i][j]);
-            }
+        // Print players and their cards
+        while(!playerQueue.isEmpty()){
+            Player player = playerQueue.dequeue();
+            System.out.println(player.getName() + "'s cards:");
+            player.printCards();
             System.out.println();
         }
-
     }
     //Method to shuffle the deck
     private static void shuffleDeck(String[] deck){
